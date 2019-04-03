@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/MyProgram/CLion/CLionProject/lab_2/BTree.cpp
+BTree.h
+C:/MyProgram/CLion/CLionProject/lab_2/BTree.h
+
+C:/MyProgram/CLion/CLionProject/lab_2/BTree.h
+iostream
+-
+fstream
+-
+
+C:/MyProgram/CLion/CLionProject/lab_2/main.cpp
+iostream
+-
+vector
+-
+fstream
+-
+BTree.h
+C:/MyProgram/CLion/CLionProject/lab_2/BTree.h
+
