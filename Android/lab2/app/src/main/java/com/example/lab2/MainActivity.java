@@ -81,12 +81,19 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onItemClick(View view, int position)
             {
-                pagePosition = position;
-                viewPager.setCurrentItem(position);
-                recyclerView.setVisibility(View.GONE);
-                viewPager.setVisibility(View.VISIBLE);
-                setTitle(DataClass.civilizations.get(position).getName());
-                isPagePressed = true;
+                if(InternetConnection.isOnline(MainActivity.this))
+                {
+                    pagePosition = position;
+                    viewPager.setCurrentItem(position);
+                    recyclerView.setVisibility(View.GONE);
+                    viewPager.setVisibility(View.VISIBLE);
+                    setTitle(DataClass.civilizations.get(position).getName());
+                    isPagePressed = true;
+                }
+                else
+                {
+                    InternetConnection.showToast(MainActivity.this);
+                }
             }
         });
     }

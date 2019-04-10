@@ -7,9 +7,11 @@ import android.os.Handler;
 import android.os.MemoryFile;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -18,17 +20,14 @@ import retrofit2.Response;
 
 public class SplashActivity extends AppCompatActivity
 {
-    //W/libEGL: EGLNativeWindowType 0x7e84592010 disconnect failed
     private Service service = RetrofitHandler.setRetrofir().create(Service.class);
-    private static final String TAG = "SplashScr";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        DataClass.civilizations = new ArrayList<>();
-        Call<ArrayList<Civilization>> call = service.getTehnologys();
-        call.enqueue(new Callback<ArrayList<Civilization>>()
+
+        /*call.enqueue(new Callback<ArrayList<Civilization>>()
         {
             @Override
             public void onResponse(Call<ArrayList<Civilization>> call, Response<ArrayList<Civilization>> response)
@@ -39,14 +38,11 @@ public class SplashActivity extends AppCompatActivity
                     DataClass.civilizations.addAll(technologies);
                     DataClass.civilizations.remove(0);
                 }
-                Log.d(TAG, "onResponse: " + response.code());
             }
 
             @Override
             public void onFailure(Call<ArrayList<Civilization>> call, Throwable t)
-            {
-                Log.d(TAG, "onFailure: " + "fail");
-            }
+            {}
         });
         new Handler().postDelayed(new Runnable()
         {
@@ -57,19 +53,35 @@ public class SplashActivity extends AppCompatActivity
                 startActivity(intent);
                 finish();
             }
-        }, 500);
-
-        //MyAsyncTask myAsyncTask = (MyAsyncTask) new MyAsyncTask().execute();
+        }, 500);*/
+        while(!InternetConnection.isOnline(this))
+        {
+            Toast.makeText(this, "Success", Toast.LENGTH_LONG).show();
+        }
+        MyAsyncTask myAsyncTask = (MyAsyncTask) new MyAsyncTask().execute();
     }
 
-    /*class MyAsyncTask extends AsyncTask<Void, Void, Void>
+    class MyAsyncTask extends AsyncTask<Void, Void, Void>
     {
 
         @Override
         protected Void doInBackground(Void... voids)
         {
 
-
+            DataClass.civilizations = new ArrayList<>();
+            Call<ArrayList<Civilization>> call = service.getTehnologys();
+            try
+            {
+                Response<ArrayList<Civilization>> response = call.execute();
+                ArrayList<Civilization> arrayList = response.body();
+                assert arrayList != null;
+                DataClass.civilizations.addAll(arrayList);
+                DataClass.civilizations.remove(0);
+            }
+            catch(IOException e)
+            {
+                e.printStackTrace();
+            }
             return null;
         }
 
@@ -77,9 +89,11 @@ public class SplashActivity extends AppCompatActivity
         protected void onPostExecute(Void aVoid)
         {
             super.onPostExecute(aVoid);
-
+            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
         }
-    }*/
+    }
 
     @Override
     protected void onDestroy()

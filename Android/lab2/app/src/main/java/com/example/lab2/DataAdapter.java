@@ -1,8 +1,6 @@
 package com.example.lab2;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,8 +13,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.GlideBuilder;
 import com.squareup.picasso.Picasso;
 
-import java.io.FileNotFoundException;
-import java.util.logging.LogRecord;
 
 
 public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder>
@@ -24,7 +20,6 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder>
     private static final String TAG = "DataAdapter";
     private LayoutInflater inflater;
     private Context context;
-    //private final PublishSubject<String> onClickListener = PublishSubject.create();
 
     DataAdapter(Context context)
     {
