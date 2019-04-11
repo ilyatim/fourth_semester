@@ -1,64 +1,44 @@
-package com.example.lab2;
+package com.example.lab2.Activity;
 
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.MemoryFile;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
+import com.example.lab2.InternetConnection;
+import com.example.lab2.PojoClass.Civilization;
+import com.example.lab2.DataClass;
+import com.example.lab2.Retrofit.RetrofitHandler;
+import com.example.lab2.Retrofit.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SplashActivity extends AppCompatActivity
 {
     private Service service = RetrofitHandler.setRetrofir().create(Service.class);
+    private static String TAG = "SplashScr";
+    private MyAsyncTask myAsyncTask = (MyAsyncTask) new MyAsyncTask();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
-        /*call.enqueue(new Callback<ArrayList<Civilization>>()
+        if(!InternetConnection.isOnline(this))
         {
-            @Override
-            public void onResponse(Call<ArrayList<Civilization>> call, Response<ArrayList<Civilization>> response)
-            {
-                if (response.body() != null)
-                {
-                    ArrayList<Civilization> technologies = response.body();
-                    DataClass.civilizations.addAll(technologies);
-                    DataClass.civilizations.remove(0);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<Civilization>> call, Throwable t)
-            {}
-        });
-        new Handler().postDelayed(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        }, 500);*/
-        while(!InternetConnection.isOnline(this))
-        {
-            Toast.makeText(this, "Success", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Missing connection, please tap the screen to reconnect", Toast.LENGTH_LONG).show();
         }
-        MyAsyncTask myAsyncTask = (MyAsyncTask) new MyAsyncTask().execute();
+        else
+        {
+            myAsyncTask.execute();
+        }
     }
 
     class MyAsyncTask extends AsyncTask<Void, Void, Void>
@@ -68,15 +48,14 @@ public class SplashActivity extends AppCompatActivity
         protected Void doInBackground(Void... voids)
         {
 
-            DataClass.civilizations = new ArrayList<>();
+            DataClass.create();
             Call<ArrayList<Civilization>> call = service.getTehnologys();
             try
             {
                 Response<ArrayList<Civilization>> response = call.execute();
                 ArrayList<Civilization> arrayList = response.body();
                 assert arrayList != null;
-                DataClass.civilizations.addAll(arrayList);
-                DataClass.civilizations.remove(0);
+                DataClass.addAll(arrayList);
             }
             catch(IOException e)
             {
@@ -99,5 +78,21 @@ public class SplashActivity extends AppCompatActivity
     protected void onDestroy()
     {
         super.onDestroy();
+    }
+    @Override
+    public boolean onTouchEvent(MotionEvent motionEvent)
+    {
+        if(motionEvent.getAction() == MotionEvent.ACTION_DOWN)
+        {
+            if(!InternetConnection.isOnline(this))
+            {
+                Toast.makeText(this, "Missing connection, please tap the screen to reconnect", Toast.LENGTH_LONG).show();
+            }
+            else
+            {
+                myAsyncTask.execute();
+            }
+        }
+        return super.onTouchEvent(motionEvent);
     }
 }

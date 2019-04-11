@@ -1,20 +1,18 @@
-package com.example.lab2;
+package com.example.lab2.Activity;
 
-import android.content.Intent;
-import android.nfc.Tag;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.example.lab2.Adapter.DataAdapter;
+import com.example.lab2.DataClass;
+import com.example.lab2.InternetConnection;
+import com.example.lab2.Adapter.PageAdapter;
+import com.example.lab2.R;
+
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity
@@ -26,6 +24,7 @@ public class MainActivity extends AppCompatActivity
     public static final String TAG = "MainActivity";
     DataAdapter dataAdapter;
     PagerAdapter pagerAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -69,7 +68,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onPageSelected(int i)
             {
-                setTitle(DataClass.civilizations.get(i).getName());
+                setTitle(DataClass.get(i).getName());
             }
 
             @Override
@@ -87,7 +86,7 @@ public class MainActivity extends AppCompatActivity
                     viewPager.setCurrentItem(position);
                     recyclerView.setVisibility(View.GONE);
                     viewPager.setVisibility(View.VISIBLE);
-                    setTitle(DataClass.civilizations.get(position).getName());
+                    setTitle(DataClass.get(position).getName());
                     isPagePressed = true;
                 }
                 else
@@ -123,4 +122,5 @@ public class MainActivity extends AppCompatActivity
             finish();
         }
     }
+
 }

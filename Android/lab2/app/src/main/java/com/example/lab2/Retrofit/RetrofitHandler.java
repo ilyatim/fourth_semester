@@ -1,4 +1,4 @@
-package com.example.lab2;
+package com.example.lab2.Retrofit;
 
 import android.util.Log;
 

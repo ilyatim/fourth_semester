@@ -1,4 +1,4 @@
-package com.example.lab2;
+package com.example.lab2.PojoClass;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

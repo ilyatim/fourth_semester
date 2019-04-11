@@ -1,4 +1,4 @@
-package com.example.lab2;
+package com.example.lab2.Adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.lab2.DataClass;
+import com.example.lab2.R;
 import com.squareup.picasso.Picasso;
 
 public class PageAdapter extends PagerAdapter
@@ -26,7 +28,7 @@ public class PageAdapter extends PagerAdapter
     @Override
     public int getCount()
     {
-        return DataClass.civilizations.size();
+        return DataClass.getSize();
     }
 
     @Override
@@ -44,9 +46,9 @@ public class PageAdapter extends PagerAdapter
         ImageView imageView = (ImageView) view.findViewById(R.id.ImageViewPager);
         TextView textView = (TextView) view.findViewById(R.id.textViewPager);
 
-        if(DataClass.civilizations.get(position).getHelpText() != null)
+        if(DataClass.get(position).getHelpText() != null)
         {
-            textView.setText(DataClass.civilizations.get(position).getHelpText());
+            textView.setText(DataClass.get(position).getHelpText());
         }
         else
         {
@@ -57,7 +59,7 @@ public class PageAdapter extends PagerAdapter
                 .load(DataClass.civilizations.get(position).getGraphic())
                 .into(imageView);*/
         Picasso.get()
-                .load(DataClass.civilizations.get(position).getGraphic())
+                .load(DataClass.get(position).getGraphic())
                 .placeholder(R.drawable.civilizationlogo)
                 .into(imageView);
         container.addView(view);

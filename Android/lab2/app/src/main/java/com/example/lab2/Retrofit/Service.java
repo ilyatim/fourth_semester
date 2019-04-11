@@ -1,4 +1,6 @@
-package com.example.lab2;
+package com.example.lab2.Retrofit;
+
+import com.example.lab2.PojoClass.Civilization;
 
 import java.util.ArrayList;
 
