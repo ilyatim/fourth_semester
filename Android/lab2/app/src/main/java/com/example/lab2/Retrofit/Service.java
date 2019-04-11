@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import retrofit2.Call;
 import retrofit2.http.GET;
 
-public interface Service
+public interface Service    //интерфейс для управления адресом
 {
-    @GET("data/techs.ruleset.json")
+    @GET("data/techs.ruleset.json") //get запрос для retrofit
     Call<ArrayList<Civilization>> getTehnologys();
 }

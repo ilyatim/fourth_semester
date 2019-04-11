@@ -17,9 +17,9 @@ import com.squareup.picasso.Picasso;
 
 public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder>
 {
-    private static final String TAG = "DataAdapter";
     private LayoutInflater inflater;
     private Context context;
+    private static ClickListener clickListener; //установка click listener
 
     public DataAdapter(Context context)
     {
@@ -38,12 +38,12 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder>
     @Override
     public void onBindViewHolder(@NonNull final DataAdapter.ViewHolder viewHolder, int i)
     {
-        viewHolder.textView.setText(DataClass.get(i).getName());
-        /*Glide.with(context)
+        viewHolder.textView.setText(DataClass.get(i).getName());    //установка текста
+        /*Glide.with(context)   //попатка использовать библиотеку Glide для загрузки изображения
                 .load(DataClass.civilizations.get(i).getGraphic())
                 .into(viewHolder.imageView);*/
 
-        Picasso.get()
+        Picasso.get()   //загрузка изображения через url
                 .load(DataClass.get(i).getGraphic())
                 .placeholder(R.drawable.civilizationlogo)
                 .into(viewHolder.imageView);
@@ -72,18 +72,19 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder>
         }
 
         @Override
-        public void onClick(View v)
+        public void onClick(View v) //переопределение клика на элемент recycle view
         {
             clickListener.onItemClick(v, getAdapterPosition());
         }
     }
-    private static ClickListener clickListener;
 
-    public interface ClickListener {
+    public interface ClickListener  //реализация собственного clickListener
+    {
         void onItemClick(View view, int position);
     }
 
-    public void setOnClickListener(ClickListener clickListener) {
+    public void setOnClickListener(ClickListener clickListener) //установка собственного clickListener
+    {
         DataAdapter.clickListener = clickListener;
     }
 }

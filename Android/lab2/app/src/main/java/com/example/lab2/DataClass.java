@@ -4,9 +4,10 @@ import com.example.lab2.PojoClass.Civilization;
 
 import java.util.ArrayList;
 
-public class DataClass
+public class DataClass  //класс для хранения данных
 {
-    private static ArrayList<Civilization> civilizations;
+    private static ArrayList<Civilization> civilizations;   //хранения в классе массива, загруженного из json файла,
+                                                            // для дальнейшего испоьзования в recycle view и pager view
 
     public static void create()
     {
@@ -15,7 +16,7 @@ public class DataClass
     public static void addAll(ArrayList<Civilization> arrayList)
     {
         civilizations.addAll(arrayList);
-        civilizations.remove(0);
+        civilizations.remove(0);    //т.к. json файл битый, первый элемент содержит некорректное значение, его следует удалить
     }
     public static Civilization get(int index)
     {

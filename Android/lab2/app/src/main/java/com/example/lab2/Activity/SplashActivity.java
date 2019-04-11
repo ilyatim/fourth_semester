@@ -22,16 +22,17 @@ import retrofit2.Response;
 
 public class SplashActivity extends AppCompatActivity
 {
-    private Service service = RetrofitHandler.setRetrofir().create(Service.class);
-    private static String TAG = "SplashScr";
-    private MyAsyncTask myAsyncTask = (MyAsyncTask) new MyAsyncTask();
+    private boolean isAlreadyTap;   //проверка: нажал ли пользователь на экран посел реконекта или нет
+    private Service service = RetrofitHandler.setRetrofit().create(Service.class);  //экземпляр интерфейса service
+    private MyAsyncTask myAsyncTask = (MyAsyncTask) new MyAsyncTask();  //AsyncTask для отправление запроса в доп. потоке
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        if(!InternetConnection.isOnline(this))
+        isAlreadyTap = false;
+        if(!InternetConnection.isOnline(this))  //проверка на наличия интернет соединения
         {
             Toast.makeText(this, "Missing connection, please tap the screen to reconnect", Toast.LENGTH_LONG).show();
         }
@@ -41,14 +42,17 @@ public class SplashActivity extends AppCompatActivity
         }
     }
 
-    class MyAsyncTask extends AsyncTask<Void, Void, Void>
+    class MyAsyncTask extends AsyncTask<Void, Void, Void>   //класс наследник AsyncTask для выполнения интернет запроса в фоне
     {
 
         @Override
         protected Void doInBackground(Void... voids)
         {
 
-            DataClass.create();
+            DataClass.create(); //создание будущего массива для recycle view и view pager
+            /*
+            *выполнение запроса и послудеющий парсинг json файла с помощью библиотеки retrofit2
+            */
             Call<ArrayList<Civilization>> call = service.getTehnologys();
             try
             {
@@ -68,7 +72,8 @@ public class SplashActivity extends AppCompatActivity
         protected void onPostExecute(Void aVoid)
         {
             super.onPostExecute(aVoid);
-            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+            Intent intent = new Intent(SplashActivity.this, MainActivity.class);   //запуск нового окна
+                                                                                                //после выполнения действий в AsyncTask
             startActivity(intent);
             finish();
         }
@@ -80,16 +85,17 @@ public class SplashActivity extends AppCompatActivity
         super.onDestroy();
     }
     @Override
-    public boolean onTouchEvent(MotionEvent motionEvent)
+    public boolean onTouchEvent(MotionEvent motionEvent)    //переопределение касания к экрану
     {
-        if(motionEvent.getAction() == MotionEvent.ACTION_DOWN)
+        if(motionEvent.getAction() == MotionEvent.ACTION_DOWN)  //если былы совершенно касание, выполнить действия
         {
             if(!InternetConnection.isOnline(this))
             {
                 Toast.makeText(this, "Missing connection, please tap the screen to reconnect", Toast.LENGTH_LONG).show();
             }
-            else
+            else if(!isAlreadyTap)
             {
+                isAlreadyTap = true;
                 myAsyncTask.execute();
             }
         }

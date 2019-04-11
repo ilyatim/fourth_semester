@@ -46,7 +46,7 @@ public class PageAdapter extends PagerAdapter
         ImageView imageView = (ImageView) view.findViewById(R.id.ImageViewPager);
         TextView textView = (TextView) view.findViewById(R.id.textViewPager);
 
-        if(DataClass.get(position).getHelpText() != null)
+        if(DataClass.get(position).getHelpText() != null)   //если у технологии есть описание, использовать его в качестве текта к pager view
         {
             textView.setText(DataClass.get(position).getHelpText());
         }
@@ -58,7 +58,7 @@ public class PageAdapter extends PagerAdapter
         /*Glide.with(context)
                 .load(DataClass.civilizations.get(position).getGraphic())
                 .into(imageView);*/
-        Picasso.get()
+        Picasso.get()   //загрузка изображения с помощью библиотеки picasso через url
                 .load(DataClass.get(position).getGraphic())
                 .placeholder(R.drawable.civilizationlogo)
                 .into(imageView);

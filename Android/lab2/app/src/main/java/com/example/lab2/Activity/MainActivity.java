@@ -17,13 +17,12 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity
 {
-    private RecyclerView recyclerView;
-    private ViewPager viewPager;
-    private static boolean isPagePressed = false;
-    private static int pagePosition;
-    public static final String TAG = "MainActivity";
-    DataAdapter dataAdapter;
-    PagerAdapter pagerAdapter;
+    private RecyclerView recyclerView;  //переменная типа recycleView
+    private ViewPager viewPager;    //переменная типа viewPager
+    private static boolean isPagePressed = false;   //проверка нажат ли элемент viewPager
+    private static int pagePosition;    //текущая страница в viewPager
+    private DataAdapter dataAdapter;    //адаптер для recycle view
+    private PagerAdapter pagerAdapter;  //адаптер для view pager
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -33,7 +32,7 @@ public class MainActivity extends AppCompatActivity
 
         findViewById();
 
-        if(isPagePressed)
+        if(isPagePressed)   //если пользователель открыл конкретную технологию, recycle view - исчезает, view pager - появляется
         {
             viewPager.setCurrentItem(pagePosition);
             viewPager.setVisibility(View.VISIBLE);
@@ -51,13 +50,13 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private void findViewById()
+    private void findViewById() //поиск элементов по их id
     {
         recyclerView = (RecyclerView) findViewById(R.id.recycleView);
         viewPager = (ViewPager) findViewById(R.id.viewPager);
     }
 
-    private void setListener()
+    private void setListener()  //прикрепление listenerОВ
     {
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener()
         {
@@ -80,24 +79,24 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onItemClick(View view, int position)
             {
-                if(InternetConnection.isOnline(MainActivity.this))
-                {
+                /*if(InternetConnection.isOnline(MainActivity.this))    //если отсутсвует интернет, нельзя открыть view pager
+                {*/
                     pagePosition = position;
                     viewPager.setCurrentItem(position);
                     recyclerView.setVisibility(View.GONE);
                     viewPager.setVisibility(View.VISIBLE);
                     setTitle(DataClass.get(position).getName());
                     isPagePressed = true;
-                }
+                /*}
                 else
                 {
-                    InternetConnection.showToast(MainActivity.this);
-                }
+                    InternetConnection.showToast(MainActivity.this);    //вывести сообщение об отсутсвие интернета
+                }*/
             }
         });
     }
 
-    private void setTitle(String title)
+    private void setTitle(String title) //изменение навзвания в action bar
     {
         Objects.requireNonNull(getSupportActionBar()).setTitle(title);
     }
@@ -110,7 +109,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed()
     {
-        if(!recyclerView.isShown())
+        if(!recyclerView.isShown()) //если открыт view pager, возвращается к recycle view, в ином случае, закрывается программа
         {
             recyclerView.setVisibility(View.VISIBLE);
             viewPager.setVisibility(View.GONE);
