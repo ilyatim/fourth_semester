@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="firstbuttontext">Показать список студентов</string>
+    <string name="secondbuttontext">Добавить запись в список</string>
+    <string name="thirdbuttontext">Заменить последнюю запись</string>
+    <string-array name="students">
+        <item>Гусаров Андрей Юрьевич</item>
+        <item>Прокафьев Сергей Васильевич</item>
+        <item>Суртурова Ксения Евгеньевна</item>
+        <item>Вишнев Федор Иванович</item>
+        <item>Алексеев Алексей Леонидович</item>
+        <item>Степко Варвара Николаевна</item>
+        <item>Андреев Яков Иванович</item>
+        <item>Сулеев Эмир Эбрагимович</item>
+        <item>Антонов Рустам Святославович</item>
+        <item>Сергеев Василий Степанович</item>
+    </string-array>
+</resources>
