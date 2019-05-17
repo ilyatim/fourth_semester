@@ -14,7 +14,8 @@ class RecyclerViewAdapter(private val students: List<Student>) : RecyclerView.Ad
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int)
     {
         viewHolder.studentId.text = (position + 1).toString()
-        viewHolder.studentFIO.text = students[position].fio
+        val string: String = students[position].secondName + " " + students[position].firstName + " " + students[position].thirdName
+        viewHolder.studentFIO.text = string
         viewHolder.studentAddTime.text = students[position].addTime
     }
 

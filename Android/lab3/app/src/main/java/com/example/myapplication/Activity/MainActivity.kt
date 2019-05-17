@@ -1,7 +1,9 @@
 package com.example.myapplication.Activity
 
 import android.annotation.SuppressLint
+import android.arch.persistence.db.SupportSQLiteDatabase
 import android.arch.persistence.room.Room
+import android.arch.persistence.room.migration.Migration
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -20,14 +22,23 @@ class MainActivity() : AppCompatActivity()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val MIGRATION_1_2 = object : Migration(1, 2)
+        {
+            override fun migrate(database: SupportSQLiteDatabase)
+            {
+
+            }
+        }
         database = Room.databaseBuilder<MyDatabase>(this, MyDatabase::class.java, "studentDB")
+            .addMigrations(MIGRATION_1_2)
             .allowMainThreadQueries()
             .build()
         database.studentDAO().nukeTable()
 
         for(i in 1..5)
         {
-            database.studentDAO().insertAll(Student(resources.getStringArray(R.array.students).random(), getDate()))
+            database.studentDAO().insertAll(Student(resources.getStringArray(R.array.students).random(),
+                                                    getDate()))
         }
         setOnClickListener()
 
@@ -39,11 +50,14 @@ class MainActivity() : AppCompatActivity()
             startActivity(Intent(this, ListActivity::class.java))
         }
         button2.setOnClickListener {
-            database.studentDAO().insertAll(Student(resources.getStringArray(R.array.students).random(), getDate()))
+            database.studentDAO().insertAll(Student(resources.getStringArray(R.array.students).random(),
+                                                    getDate()))
         }
         button3.setOnClickListener {
             val student = database.studentDAO().getLastRecord()
-            student.fio = "Иванов Иван Иванович"
+            student.firstName = "Иван"
+            student.secondName = "Иванов"
+            student.thirdName = "Иванович"
             database.studentDAO().update(student)
         }
     }
